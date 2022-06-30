@@ -1,0 +1,613 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Home page</title>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="datatable3.json"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"> -->
+    <link rel="stylesheet" type="text/css"
+        href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
+
+    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> -->
+
+</head>
+
+<body>
+
+
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="navbar navbar-expand-lg">
+                    <div class="container-fluid">
+                        <div class="col-lg-2">
+                            <img class="logo" src="https://inrelay.com/static/media/logo-new.75790ceb.svg">
+                        </div>
+                        <div class="col-lg-8">
+                            <ul>
+                                <li><a class="active" href="#home">Home</a></li>
+                                <li><a href="#blog">Blog</a></li>
+                                <li><a href="#">Industries</a></li>
+
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#">Pricing</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg">
+
+
+                            <button type="button" class="btn-login">LOGIN</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!--     
+    
+    <label for="show">Show:</label>
+    <select name="show" id="show">
+        <option id="ten">10</option>
+        <option id="twentyfive">25</option>
+        <option id="Fifty">50</option>
+        <option id="hundread">100</option>
+    </select> entries -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <button onclick="showAllRows()" class="btn btn-outline-secondary show" style="width: 100%;">Show
+                    All</button>
+            </div>
+            <div class="col-6">
+                <button onclick="showLessRows()" class="btn btn-outline-secondary show" style="width: 100%;">Show
+                    Less</button>
+            </div>
+        </div>
+        <div>
+            <pre>
+
+    </pre>
+        </div>
+        <div claas="row justify-content-center">
+            <input type="text" id="myInput"  placeholder="Search for names.." title="Type in a name">
+            <!-- <form class="d-flex">
+                <div class="col-6">
+                    <input id='search' class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-outline-success" type="submit"
+                        style="width: 90%;margin-left: 10px;">Search</button>
+                </div>
+            </form> -->
+        </div>
+
+        <br />
+        <br />
+        <div class="fixTableHead text-center">
+
+            <table id="table" style="width:100%">
+                <!-- <thead> -->
+                <tr id="head">
+                    <th data-column="Student_id" data-order="desc">ID</th>
+                    <th data-column="Age" data-order="desc">Age</th>
+                    <th data-column="Gender" data-order="desc">Gender</th>
+                    <th data-column="Grade" data-order="desc">Grade</th>
+                    <th data-column="Employed" data-order="desc">Employed</th>
+                </tr>
+                <!-- </thead> -->
+
+                <tbody id="tbody"></tbody>
+
+            </table>
+        </div>
+        <button id="previousbutton" class="btn btn-primary">Previous</button>
+        <button id="nextbutton" class="btn btn-primary">Next</button>
+
+
+
+
+        <script type="text/javascript" charset="utf8"
+            src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>
+            // let sortDirection = false;
+            var fdata = [];
+            var sdata = [];
+
+            // let slice_data = sliced[0]
+            // tdata = fdata.unshift(slice_data)
+            // let data, table, sortCol;
+            // let sortAsc = false;
+            const pageSize = 10;
+            let curPage = 1;
+            // let maintable = '';
+
+            // $(document).ready(function(){
+            //     $.ajax({
+            //         url : "datatable3.json",
+            //         dataType : "json",
+            //         success : function(data){
+            //             $(data).each(function(index, value){
+            //                 var record = "<tr><td>"+(index+1)+"</td><td>" + 
+            //                         value.Student_id +"</td><td>"+ 
+            //                         value.Age +"</td><td>" + 
+            //                         value.Gender +"</td><td>" + 
+            //                         value.Grade +"</td><td>" + 
+            //                         value.Employed + "</td></tr>"
+            //             $("table").append(record);
+            //             $('table tr:gt(10)').hide();
+            //             });
+            //         }
+
+            //     });
+
+            // });
+            // $('th').on('click', function () {
+            //     var column = $(this).data('column')
+            //     var order = $(this).data('order')
+
+            //             // console.log("column was clicked", column, order);
+
+            //     if (order == 'desc') {
+            //         $(this).data('order', "asc")
+            //         console.log("if run", order)
+            //         data = data.sort((a, b) => a[column] > b[column] ? 1 : -1)
+            //         $("table").append(data)
+            //                     // console.log(data)
+            //                 // $("#tbody").empty()
+            //                 // load(data)
+            //     }
+            //     else if(order == 'asc'){
+            //         $(this).data('order', "desc")
+            //         console.log("else run", order)
+            //         data = fdata.sort((a, b) => a[column] < b[column] ? 1 : -1)
+            //         // console.log(data)
+            //                     // jsonDataLoad(data)
+            //                 // $("#tbody").empty()
+            //                 // load(fdata)
+            //             }
+            //         });
+
+
+            //         .......................................................................
+            $(document).ready(function () {
+
+                $.getJSON("datatable3.json",
+
+                    function (data) {
+                        for (i of data) {
+                            fdata.push(i)
+                        }
+
+                        sdata = fdata.slice(20, 21);
+                        console.log('sdata', sdata)
+                        slice_data = fdata.splice(20, 1);
+                        console.log('slice_data', slice_data)
+                        console.log(Array.prototype.push.apply(sdata, fdata))
+                        renderTable();
+                        // searchdata();
+                    });
+
+
+            });
+
+
+
+
+            // .............................................................................
+
+
+            //     function sortColumn(columnName){
+            //             const mdataType = typeof data[0][columnNae];
+            //             sortDirection = !sortDirection;
+            //             console.log('in sort')
+            //             switch(dataType){
+            //                 case 'number' :
+            //                     sortNumberColumn(sortDirection, columnName);
+            //                     break;
+            //             }
+            //          load(data)
+            //             console.log("3",data)
+            //         }
+            // function sortNumberColumn(sort, columnName){
+            //     data = data.sort((p1,p2) => {
+            //         return sort ? p1[columnName] - p2[columnName] : p2[columnName]
+            //         - p1[columnName]
+            //     });
+            // }
+
+
+            // const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+            //     const search = (idx, asc) => (a, b) => ((v1, v2) => !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2))
+            //     (getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+            //     $("#tbody").empty();
+
+            //     document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+            //         const table = th.closest('table');
+            //         Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+            //             .sort(search(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+            //             .forEach(tr => table.appendChild(tr));
+            //             // $('table tr:gt(10)').hide();
+
+            //     })));
+
+
+
+            // $('th').on( 'click', function () {
+            //     var column = $(this).data('column')
+            //     var order = $(this).data('order')
+
+            //     console.log("column was clicked", column, order);
+
+            //     if(order == 'desc'){
+            //         $(this).data('order', "asc")
+
+            //         data = data.sort((a,b) => a[column] > b[column] ? 1 : 
+            //         -1)
+            //     }
+            //     else{
+            //         $(this).data('order', "desc")
+            //         data = data.sort((a,b) => a[column] < b[column] ? 1 : 
+            //         -1)
+            //     }
+            // } );
+
+
+            //     ................................................
+
+            function showLessRows() {
+                renderTable();
+                // searchdata();
+            }
+            function showAllRows() {
+
+                // console.log('fdata', fdata)
+                var student = '';
+                $.each(sdata, function (key, value) {
+                    student += '<tr>';
+                    student += '<td>' +
+                        value.Student_id + '</td>';
+
+                    student += '<td>' +
+                        value.Age + '</td>';
+
+                    student += '<td>' +
+                        value.Gender + '</td>';
+
+                    student += '<td>' +
+                        value.Grade + '</td>';
+
+                    student += '<td>' +
+                        value.Employed + '</td>';
+
+                    student += '</tr>';
+                })
+                $("#tbody").empty();
+                $('#tbody').append(student);
+            }
+
+            // $.each(fdata, function(key, value){
+            //     student += '<tr>';
+            //     student += '<td>' +
+            //         value.Student_id + '</td>';
+
+            //     student += '<td>' +
+            //         value.Age + '</td>';
+
+            //     student += '<td>' +
+            //         value.Gender + '</td>';
+
+            //     student += '<td>' +
+            //         value.Grade + '</td>';
+
+            //     student += '<td>' +
+            //         value.Employed + '</td>';
+
+            //     student += '</tr>';
+            // })
+            //  $("#tbody").empty();
+            // $('#tbody').append(student);
+
+
+
+
+
+
+
+
+            document.querySelectorAll('#table th').forEach(t => {
+                t.addEventListener('click', sort, false);
+            });
+
+
+
+
+            function sort() {
+
+                var column = $(this).data('column')
+                var order = $(this).data('order')
+
+                console.log("column was clicked", column, order);
+
+                if (order == 'desc') {
+                    $(this).data('order', "asc")
+                    data = sdata.sort((a, b) => {
+                        if (b['Student_id'] == '21') {
+                            // console.log("if student id 21")
+                            return 0;
+                        }
+                        console.log(a[column]);
+                        if (a[column] > b[column]) {
+                            return sdata ? -1 : 1;
+
+                        }
+                    });
+                    renderTable();
+                    // searchdata();
+                }
+                else if (order == 'asc') {
+                    $(this).data('order', "desc")
+                    data = sdata.sort((a, b) => {
+                        if (b['Student_id'] == '21') {
+                            // console.log(" else student id 21")
+                            return 0;
+                        }
+                        if (a[column] < b[column]) {
+                            return sdata ? -1 : 1;
+
+                        }
+
+                    });
+                    renderTable();
+                    // searchdata();
+                }
+
+
+            }
+
+
+
+
+            document.querySelector('#nextbutton').addEventListener('click', nextPage, false);
+            document.querySelector('#previousbutton').addEventListener('click', previousPage, false);
+
+            function previousPage() {
+                if (curPage > 1) curPage--;
+                renderTable();
+                // searchdata();
+            }
+            function nextPage() {
+                if ((curPage * pageSize) < fdata.length) curPage++;
+                // searchdata();
+                renderTable();
+                
+            }
+
+            function renderTable() {
+                
+                var student = '';
+
+                sdata.filter((row, index) => {
+                    let start = (curPage - 1) * pageSize;
+                    let end = curPage * pageSize;
+                    if (index >= start && index < end) return true;
+                }).forEach(value => {
+                    student += '<tr>';
+                    student += '<td>' +
+                        value.Student_id + '</td>';
+
+                    student += '<td>' +
+                        value.Age + '</td>';
+
+                    student += '<td>' +
+                        value.Gender + '</td>';
+
+                    student += '<td>' +
+                        value.Grade + '</td>';
+
+                    student += '<td>' +
+                        value.Employed + '</td>';
+
+                    student += '</tr>';
+
+                });
+                
+                // table.innerHTML = student;
+                $("#tbody").empty();
+                $('#tbody').append(student);
+                // searchdata();
+
+                // console.log(student);
+               
+            }
+
+         
+
+            document.querySelectorAll("#myInput").forEach(e=>{
+                e.addEventListener('keyup', searchdata, false);
+            });
+            // searchBox.addEventListener('keyup', function searchdata() 
+            function searchdata() {
+                var searchData = this.value;
+                searchData = searchData.toUpperCase();
+                // console.log(searchData);
+                var tableSearch = document.getElementById('tbody');
+                var all = tableSearch.getElementsByTagName('tr');
+                // console.log(all);
+                for (var i = 0; i < all.length; i++) {
+                    var address_column = all[i].getElementsByTagName('td');
+                    for (var j = 0; j < address_column.length; j++) {
+                        if (address_column[j]) {
+                            var address_value = address_column[j].innerHTML || address_column[j].textContent;
+                            address_value = address_value.toUpperCase();
+                            if (address_value.indexOf(searchData) > -1) {
+                                all[i].style.display = '';
+                                // console.log("found")
+                                break;
+                            } else {
+                                all[i].style.display = 'none';
+                                // console.log("not found")
+                            }
+
+                        }
+
+
+                    }
+
+                }
+            }
+
+
+
+//             function searchdata() {
+//   var input, filter, table, tr, td, i, txtValue;
+//   input = document.getElementById("myInput");
+//   filter = input.value.toUpperCase();
+//   table = document.getElementById("table");
+//   tr = table.getElementsByTagName("tr");
+//   for (i = 0; i < tr.length; i++) {
+//     td = tr[i].getElementsByTagName("td")[0];
+//     if (td) {
+//       txtValue = td.textContent || td.innerText;
+//       if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//         tr[i].style.display = "";
+//       } else {
+//         tr[i].style.display = "none";
+//       }
+//     }       
+//   }
+// }
+
+
+
+//         var topPos;
+
+// function AncorControlMatches() {
+//     topPos = Math.max(0, $("#table").offset().top - $(this).scrollTop());
+//     if (topPos == 0) {
+//         $("#table tr").css("top", topPos);
+//         $("#table tr").css("position", "fixed");
+//     } else {
+//         $("#table tr").removeAttr("style");
+//     }
+// }
+
+
+// $(window).scroll(function () {
+//     AncorControlMatches();
+// });
+
+// $(document).ready(function () {
+//     setTimeout(function () {
+//         AncorControlMatches();
+//         $(window).trigger('resize');
+//     }, 300);
+// });
+
+        // $('#next').on('click', function () {
+        //     table.page('next').draw('page');
+        // });
+
+        // $('#previous').on('click', function () {
+        //     table.page('previous').draw('page');
+        // });
+    // .............................................
+        </script>
+
+        <!-- <script>
+        var student = [];
+        fetch("http://127.0.0.1:5500/datatable3.json")
+        .then(response => {
+   return response.json();
+})
+.then(data => {
+    
+    for(var i of data){
+      // var id = i.Student_id;
+      // var data = i.Grade
+      student.push(i);
+    }
+});
+
+var jsonData = student;
+console.log(jsonData);
+
+
+function createTable(jsonData){ 
+  $(document).ready(function(){
+   $('#table').dataTable({
+     data: jsonData,
+     columns: [
+       { data: 'Student_id'},
+       { data: 'Age' },
+       { data: 'Gender'},
+       { data: 'Grade'},
+       { data: 'Employed' }
+     ]
+   });
+  });
+ }
+
+ createTable(jsonData); -->
+        <!-- //   function assignToEventsColumns(data) {
+//     var table = $('#table').dataTable({
+//         "bAutoWidth" : false,
+//         "aaData" : data.data,
+//         "columns" : [ {
+//             "data" : "Student_id"
+//         }, {
+//             "data" : "Age"
+//         }, {
+//             "data" : "Gender"
+//         }, {
+//             "data" : "Grade"
+//         }, {
+//             "data" : "Employed"
+//         } ]
+//     })
+// }; -->
+    </div>
+</body>
+
+</html>
+
+<!-- // for(i of data){
+    //     fdata.push(i)
+    // console.log(i.Age)
+    // }
+    // fdata.sort(function(a,b){
+    //     return(a.Age - b.Age)
+        
+    // })
+    // console.log('fdata',fdata) -->
+
+<!-- searching: false,
+    //         paging: false,
+    //         ordering: false,
+           
+    //     data: $('#table').append(student),
+    //     columns: [
+    //             { data: 'Student_id'},
+    //             { data: 'Age' },
+    //             { data: 'Gender'},
+    //             { data: 'Grade'},
+    //             { data: 'Employed' }
+    //     ]
+    // });
+    // console.log("1",data) -->
